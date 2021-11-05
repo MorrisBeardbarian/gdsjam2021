@@ -1,0 +1,30 @@
+{
+  "name": "gds2021",
+  "version": "1.0.0",
+  "description": "Game for GDS2021 gamejam",
+  "main": "index.js",
+  "scripts": {
+    "pre-deploy": "npm install -g nodemon & npm install",
+    "deploy": "git pull",
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "buffer": "^5.0.8",
+    "dotenv": "^10.0.0",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MorrisBeardbarian/gdsjam2021.git"
+  },
+  "keywords": [
+    "gamejam",
+    "game",
+    "javascript",
+    "phaser"
+  ],
+  "author": "morris@beardbarian.ro",
+  "license": "ISC"
+}
