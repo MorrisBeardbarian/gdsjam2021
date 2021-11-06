@@ -1,9 +1,16 @@
 import Phaser from "phaser";
 
+var possibleSizeHeight = window.innerWidth*9/16;
+var possibleSizeWidth = window.innerHeight*16/9;
+
+var widthMax = possibleSizeWidth == window.innerWidth && possibleSizeHeight < window.innerHeight;
+var canvasWidth = (widthMax? window.innerWidth: sizeWidth);
+var canvasHeight = (widthMax? sizeHeight: window.innerHeight);
+
 var config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: canvasWidth,
+  height: canvasHeight,
   physics: {
     default: "arcade",
     arcade: {
@@ -53,7 +60,7 @@ function create() {
 
   // player
   player = this.physics.add.sprite(100, 450, "dude");
-  player.setBounce(0.2);
+  player.setBounce(0);
   player.setCollideWorldBounds(true);
 
   this.anims.create({
