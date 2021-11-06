@@ -4,16 +4,20 @@
   "description": "Game for GDS2021 gamejam",
   "main": "index.js",
   "scripts": {
-    "pre-deploy": "npm install -g nodemon & npm install",
-    "deploy": "git pull",
-    "start": "nodemon index.js"
+    "pre-deploy": "npm install -g nodemon && npm install && webpack",
+    "deploy": "git push",
+    "start": "nodemon index.js",
+    "build": "webpack",
+    "watch": "webpack -w"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
     "buffer": "^5.0.8",
     "dotenv": "^10.0.0",
     "ejs": "^2.5.7",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "phaser": "^3.55.2",
+    "webpack": "^5.62.1"
   },
   "repository": {
     "type": "git",
@@ -26,5 +30,8 @@
     "phaser"
   ],
   "author": "morris@beardbarian.ro",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "webpack-cli": "^4.9.1"
+  }
 }
