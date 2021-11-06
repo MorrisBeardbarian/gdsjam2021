@@ -3,10 +3,13 @@ import { Assets } from '../assets'
 import { Player } from "../player";
 import { Door } from "../door"
 import { PlatformManager } from '../platform'
+import { Collectible } from "../collectible";
 
 export class Level1 extends Phaser.Scene {
   constructor() {
     super({ key: "Level1" });
+    this.collectibles = [];
+    this.collected = 0;
   }
 
   preload() {
@@ -19,25 +22,36 @@ export class Level1 extends Phaser.Scene {
     this.setBackground();
     // Platforms creation
     this.setPlatforms();
-    // Door creation
-    this.door = new Door(this);
-    this.door.createDoor(this.sys.canvas.width - 100, this.sys.canvas.height - 100); // 100 should not be hardcoded, works for now :D
+    // End Door creation
+    this.endDoor = new Door(this);
+    this.endDoor.createDoor(this.sys.canvas.width - 100, this.sys.canvas.height - 100); // 100 should not be hardcoded, works for now :D
 
     // Player
     this.player = new Player(this);
     this.player.createPlayer(100, this.sys.canvas.height - 100); // TODO: maybe needs to be changed
 
+    // Collectibles
+    this.createCollectibles();
+
     // Add physics
     this.platforms.collideWith(this.player.getPlayer())
-    this.platforms.collideWith(this.door.getDoor())
+    this.platforms.collideWith(this.endDoor.getDoor())
+    this.collectibles.forEach(collectible => {
+      this.platforms.collideWith(collectible.getCollectible());
+      collectible.addPlayerOverlap(this.player.getPlayer(), this.collect);
+    })
+  }
 
-    // Do some logic needed at create time
-    this.door.openDoor(); // It is opened by default
+  collect() {
+    this.collected++;
+    if (this.collected >= this.collectibles.length) {
+      this.endDoor.openDoor();
+    }
   }
 
   update() {
     this.player.playerMovementUpdate(true);
-    this.player.playerDoorPressUpdate(this.door, "Level2");
+    this.player.playerDoorPressUpdate(this.endDoor, "Level2");
   }
 
   setBackground() {
@@ -49,5 +63,15 @@ export class Level1 extends Phaser.Scene {
     var groundPlatform = this.platforms.add(this.sys.canvas.width / 2, this.sys.canvas.height, "ground")
     groundPlatform.scaleX = this.sys.canvas.width / 400; // TODO: Change this 400 to image witdth
     groundPlatform.refreshBody();
+  }
+
+  createCollectibles() {
+    var collectible1 = new Collectible(this);
+    collectible1.createCollectible(400, this.sys.canvas.height - 50, "star");
+    this.collectibles.push(collectible1)
+
+    var collectible2 = new Collectible(this);
+    collectible2.createCollectible(800, this.sys.canvas.height - 50, "star");
+    this.collectibles.push(collectible2)
   }
 }

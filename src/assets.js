@@ -19,5 +19,9 @@ export class Assets {
       frameWidth: 235,
       frameHeight: 367,
     });
+
+    // Collectible assets 
+    // Test collectible
+    this.scene.load.image("star", "public/images/star.png");
   }
 }

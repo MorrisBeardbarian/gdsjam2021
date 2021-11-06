@@ -14,7 +14,7 @@ export class Door {
 
   createDoor(x, y, sprite = "door") {
     this.door = this.scene.physics.add
-      .sprite(x - 1200, y, sprite)
+      .sprite(x, y, sprite)
       .setScale(0.2); // TODO: Don't use setScale, make the door proper size
     this.door.setCollideWorldBounds(true);
     this.setDoorAnimations();
