@@ -30,7 +30,6 @@ export class Level1 extends Phaser.Scene {
     // Add physics
     this.platforms.collideWith(this.player.getPlayer())
     this.platforms.collideWith(this.door.getDoor())
-    this.door.setColliderWithPlayer(this.player.getPlayer());
 
     // Do some logic needed at create time
     this.door.openDoor(); // It is opened by default
@@ -38,6 +37,7 @@ export class Level1 extends Phaser.Scene {
 
   update() {
     this.player.playerMovementUpdate(true);
+    this.player.playerDoorPressUpdate(this.door, "Level2");
   }
 
   setBackground() {
