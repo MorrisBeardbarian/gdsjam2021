@@ -1,11 +1,12 @@
 import Phaser from "phaser";
+import {Player} from "./player.js"
 
 var possibleSizeHeight = window.innerWidth*9/16;
 var possibleSizeWidth = window.innerHeight*16/9;
 
 var widthMax = possibleSizeWidth == window.innerWidth && possibleSizeHeight < window.innerHeight;
-var canvasWidth = (widthMax? window.innerWidth: sizeWidth);
-var canvasHeight = (widthMax? sizeHeight: window.innerHeight);
+var canvasWidth = (widthMax? window.innerWidth: possibleSizeWidth);
+var canvasHeight = (widthMax? possibleSizeHeight: window.innerHeight);
 
 var config = {
   type: Phaser.AUTO,
@@ -59,32 +60,10 @@ function create() {
   platforms.create(750, 220, "ground");
 
   // player
-  player = this.physics.add.sprite(100, 450, "dude");
-  player.setBounce(0);
-  player.setCollideWorldBounds(true);
-
-  this.anims.create({
-    key: "left",
-    frames: this.anims.generateFrameNumbers("dude", { start: 0, end: 3 }),
-    frameRate: 10,
-    repeat: -1,
-  });
-
-  this.anims.create({
-    key: "turn",
-    frames: [{ key: "dude", frame: 4 }],
-    frameRate: 20,
-  });
-
-  this.anims.create({
-    key: "right",
-    frames: this.anims.generateFrameNumbers("dude", { start: 5, end: 8 }),
-    frameRate: 10,
-    repeat: -1,
-  });
+  player = new Player(this);
 
   // add colision
-  this.physics.add.collider(player, platforms);
+  this.physics.add.collider(player.getPlayer(), platforms);
 
   // Add cursors
   cursors = this.input.keyboard.createCursorKeys();
@@ -101,7 +80,7 @@ function create() {
   });
 
   this.physics.add.collider(stars, platforms);
-  this.physics.add.overlap(player, stars, collectStar, null, this);
+  this.physics.add.overlap(player.getPlayer(), stars, collectStar, null, this);
 
   // score
   scoreText = this.add.text(16, 16, "score: 0", {
@@ -112,7 +91,7 @@ function create() {
   // bombs
   bombs = this.physics.add.group();
   this.physics.add.collider(bombs, platforms);
-  this.physics.add.collider(player, bombs, hitBomb, null, this);
+  this.physics.add.collider(player.getPlayer(), bombs, hitBomb, null, this);
 }
 
 function update() {
@@ -120,20 +99,7 @@ function update() {
     return;
   }
 
-  if (cursors.left.isDown) {
-    player.setVelocityX(-160);
-    player.anims.play("left", true);
-  } else if (cursors.right.isDown) {
-    player.setVelocityX(160);
-    player.anims.play("right", true);
-  } else {
-    player.setVelocityX(0);
-    player.anims.play("turn");
-  }
-
-  if (cursors.up.isDown && player.body.touching.down) {
-    player.setVelocityY(-330);
-  }
+  player.playerMovementUpdate(true);
 }
 
 function collectStar(player, star) {
