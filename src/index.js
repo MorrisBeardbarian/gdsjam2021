@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import {Player} from "./player.js"
+import Wall from "./wall.js"
 
 var possibleSizeHeight = window.innerWidth*9/16;
 var possibleSizeWidth = window.innerHeight*16/9;
@@ -28,6 +29,7 @@ var config = {
 
 var game = new Phaser.Game(config);
 var platforms;
+var walls;
 var player;
 var cursors;
 var stars;
@@ -48,6 +50,7 @@ function preload() {
     frameWidth: 32,
     frameHeight: 48,
   });
+  this.wallAsset = new Wall(this, "wall1", "public/images/platform.png");
 }
 
 function create() {
@@ -58,6 +61,10 @@ function create() {
   platforms.create(600, 400, "ground");
   platforms.create(50, 250, "ground");
   platforms.create(750, 220, "ground");
+
+  walls = this.physics.add.staticGroup();
+  this.wallAsset.createWall(500, 500, walls, 1);
+
 
   // player
   player = new Player(this);

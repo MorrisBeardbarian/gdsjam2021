@@ -4,7 +4,7 @@
   "description": "Game for GDS2021 gamejam",
   "main": "index.js",
   "scripts": {
-    "pre-deploy": "npm install -g nodemon webpack webpack-cli && npm install",
+    "pre-deploy": "npm install -g nodemon -g webpack -g webpack-cli && npm install",
     "deploy": "git pull",
     "start": "nodemon index.js",
     "build": "webpack",
@@ -16,7 +16,8 @@
     "dotenv": "^10.0.0",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
-    "phaser": "^3.55.2"
+    "phaser": "^3.55.2",
+    "webpack": "^5.62.1"
   },
   "repository": {
     "type": "git",
