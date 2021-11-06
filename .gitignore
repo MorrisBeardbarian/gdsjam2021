@@ -105,4 +105,4 @@ dist
 
 # other
 package-lock.json
-./public/js/
+public/js/*.js
