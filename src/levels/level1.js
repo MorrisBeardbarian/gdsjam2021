@@ -4,6 +4,7 @@ import { Player } from "../player";
 import { Door } from "../door"
 import { PlatformManager } from '../platform'
 import { Collectible } from "../collectible";
+import { SFX } from '../sfx'
 
 export class Level1 extends Phaser.Scene {
   constructor() {
@@ -18,10 +19,15 @@ export class Level1 extends Phaser.Scene {
   }
 
   create() {
+    // Sounds creation
+    this.setSounds();
+
     // Background creation
     this.setBackground();
+
     // Platforms creation
     this.setPlatforms();
+
     // End Door creation
     this.endDoor = new Door(this);
     this.endDoor.createDoor(this.sys.canvas.width - 100, this.sys.canvas.height - 100); // 100 should not be hardcoded, works for now :D
@@ -42,16 +48,13 @@ export class Level1 extends Phaser.Scene {
     })
   }
 
-  collect() {
-    this.collected++;
-    if (this.collected >= this.collectibles.length) {
-      this.endDoor.openDoor();
-    }
-  }
-
   update() {
     this.player.playerMovementUpdate(true);
     this.player.playerDoorPressUpdate(this.endDoor, "Level2");
+  }
+
+  setSounds() {
+    this.sfx = new SFX(this.scene, ["door-open"])
   }
 
   setBackground() {
@@ -63,6 +66,14 @@ export class Level1 extends Phaser.Scene {
     var groundPlatform = this.platforms.add(this.sys.canvas.width / 2, this.sys.canvas.height, "ground")
     groundPlatform.scaleX = this.sys.canvas.width / 400; // TODO: Change this 400 to image witdth
     groundPlatform.refreshBody();
+  }
+
+  collect() {
+    this.collected++;
+    if (this.collected >= this.collectibles.length) {
+      this.sfx["door-open"].play();
+      this.endDoor.openDoor();
+    }
   }
 
   createCollectibles() {
