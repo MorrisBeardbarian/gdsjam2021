@@ -1,6 +1,6 @@
 import { Assets, createMenuButton } from "./assets";
 import Phaser from "phaser";
-import { GameManager } from ".";
+import { gameManager } from "./game_manager";
 
 export class MainMenu extends Phaser.Scene {
   constructor() {
@@ -69,7 +69,6 @@ export class MainMenu extends Phaser.Scene {
   }
 
   createVolumeSlider() {
-    var gameManager = new GameManager();
     console.log("The volume is: ", gameManager.getVolume());
     var text = this.add.text(
       this.sys.canvas.width / 2 - this.sys.canvas.height / 16,

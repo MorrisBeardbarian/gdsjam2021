@@ -77,7 +77,7 @@ export class Level1 extends Phaser.Scene {
   collect() {
     this.collected++;
     if (this.collected >= this.collectibles.length) {
-      this.sfx["door-open"].play();
+      this.sfx.play("door-open");
       this.endDoor.openDoor();
     }
   }
