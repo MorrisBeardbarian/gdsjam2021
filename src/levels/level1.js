@@ -5,6 +5,7 @@ import { Door } from "../door"
 import { PlatformManager } from '../platform'
 import { Collectible } from "../collectible";
 import { SFX } from '../sfx'
+import { PauseManager } from "../pause";
 
 export class Level1 extends Phaser.Scene {
   constructor() {
@@ -46,6 +47,11 @@ export class Level1 extends Phaser.Scene {
       this.platforms.collideWith(collectible.getCollectible());
       collectible.addPlayerOverlap(this.player.getPlayer(), this.collect);
     })
+
+    // pause manager
+    this.pauseManager = new PauseManager();
+    this.pauseManager.setCurrentScene(this);
+    this.pauseManager.setupInputsPause("PauseMenu");
   }
 
   update() {
