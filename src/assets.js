@@ -3,14 +3,21 @@ export class Assets {
     this.scene = scene;
   }
 
-  load() {
-    this.load.image("sky", "public/images/sky.png");
-    this.load.image("ground", "public/images/platform.png");
-    this.load.image("star", "public/images/star.png");
-    this.load.image("bomb", "public/images/bomb.png");
-    this.load.spritesheet("dude", "public/images/dude.png", {
+  loadLevel1() {
+    // background and platforms
+    this.scene.load.image("background", "public/images/test_background.jpg");
+    this.scene.load.image("ground", "public/images/platform.png");
+
+    // player assets
+    this.scene.load.spritesheet("dude", "public/images/dude.png", {
       frameWidth: 32,
       frameHeight: 48,
+    });
+
+    // door assets
+    this.scene.load.spritesheet("door", "public/images/door.jpg", {
+      frameWidth: 235,
+      frameHeight: 367,
     });
   }
 }

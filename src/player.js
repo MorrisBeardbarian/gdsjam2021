@@ -64,11 +64,3 @@ export class Player {
     return this.player;
   }
 }
-
-// TODO: change accordingly to new assets
-export function playerPreloadAssets(scene) {
-  scene.load.spritesheet("dude", "public/images/dude.png", {
-    frameWidth: 32,
-    frameHeight: 48,
-  });
-}

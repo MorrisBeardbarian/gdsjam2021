@@ -10,6 +10,8 @@ export class PlatformManager {
     if (scale) {
       gameObject.setScale(scale).refreshBody();
     }
+
+    return gameObject
   }
 
   collideWith(object, cb) {

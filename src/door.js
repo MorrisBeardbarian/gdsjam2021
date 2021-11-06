@@ -33,7 +33,7 @@ export class Door {
         if (!this.isOpen) {
             return // do nothing, door not opened
         }
-    
+
         this.scene.start("Level2");
       }
 
@@ -56,12 +56,4 @@ export class Door {
     isOpen() {
         return this.bIsOpen;
     }
-}
-
-// TODO: change accordingly to new assets
-export function doorPreloadAssets(scene) {
-  scene.load.spritesheet("door", "public/images/door.jpg", {
-    frameWidth: 235,
-    frameHeight: 367,
-  });
 }

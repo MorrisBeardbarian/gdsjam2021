@@ -1,6 +1,8 @@
 import Phaser from "phaser";
-import { Player, playerPreloadAssets } from "./player";
-import { Door, doorPreloadAssets } from "./door.js"
+import { Assets } from '../assets'
+import { Player } from "../player";
+import { Door } from "../door"
+import { PlatformManager } from '../platform'
 
 export class Level1 extends Phaser.Scene {
   constructor() {
@@ -8,10 +10,8 @@ export class Level1 extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("background", "public/images/test_background.jpg");
-    this.load.image("ground", "public/images/platform.png");
-    playerPreloadAssets(this);
-    doorPreloadAssets(this);
+    var assets = new Assets(this)
+    assets.loadLevel1()
   }
 
   create() {
@@ -28,8 +28,8 @@ export class Level1 extends Phaser.Scene {
     this.player.createPlayer(100, this.sys.canvas.height - 100); // TODO: maybe needs to be changed
 
     // Add physics
-    this.physics.add.collider(this.player.getPlayer(), this.platforms);
-    this.physics.add.collider(this.door.getDoor(), this.platforms);
+    this.platforms.collideWith(this.player.getPlayer())
+    this.platforms.collideWith(this.door.getDoor())
     this.door.setColliderWithPlayer(this.player.getPlayer());
 
     // Do some logic needed at create time
@@ -41,12 +41,12 @@ export class Level1 extends Phaser.Scene {
   }
 
   setBackground() {
-      this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2, "background").setScale(this.sys.canvas.width / 1920);
+    this.add.image(this.sys.canvas.width / 2, this.sys.canvas.height / 2, "background").setScale(this.sys.canvas.width / 1920);
   }
 
   setPlatforms() {
-    this.platforms = this.physics.add.staticGroup();
-    var groundPlatform = this.platforms.create(this.sys.canvas.width / 2, this.sys.canvas.height, "ground");
+    this.platforms = new PlatformManager(this);
+    var groundPlatform = this.platforms.add(this.sys.canvas.width / 2, this.sys.canvas.height, "ground")
     groundPlatform.scaleX = this.sys.canvas.width / 400; // TODO: Change this 400 to image witdth
     groundPlatform.refreshBody();
   }

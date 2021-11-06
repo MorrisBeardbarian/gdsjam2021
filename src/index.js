@@ -1,7 +1,6 @@
 import Phaser from "phaser";
-
-import { Level1 } from "./level1";
-import { Level2 } from "./level2";
+import { Level1 } from "./levels/level1";
+import { Level2 } from "./levels/level2";
 
 var possibleSizeHeight = window.innerWidth*9/16;
 var possibleSizeWidth = window.innerHeight*16/9;
