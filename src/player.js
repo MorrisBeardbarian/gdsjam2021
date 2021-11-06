@@ -5,6 +5,7 @@ export class Player {
     this.scene = scene;
     this.cursors = scene.input.keyboard.createCursorKeys();
     this.FKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+    this.FKeyPressed = false;
   }
 
   createPlayer(x, y) {
@@ -26,14 +27,20 @@ export class Player {
     if (bCanJump && this.cursors.up.isDown && this.player.body.touching.down) {
       this.player.setVelocityY(-330);
     }
+
+    // Handle F Key pressed or not
+    if (this.FKey.isUp) {
+      this.FKeyPressed = false;
+    }
   }
 
   playerDoorPressUpdate(door, nextLevel) {
-    if (!door.checkOverlapPlayer(this.player) || !this.FKey.isDown) {
+    if (!door.checkOverlapPlayer(this.player) || !this.FKey.isDown || this.FKeyPressed) {
       return
     }
 
-    door.hitDoor(nextLevel);
+    this.FKeyPressed = true;
+    door.hitDoor(nextLevel, this.player);
   }
 
   createPlayerObject(x, y) {
