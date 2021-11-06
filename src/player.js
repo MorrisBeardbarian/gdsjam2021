@@ -1,7 +1,10 @@
+import Phaser from "phaser";
+
 export class Player {
   constructor(scene) {
     this.scene = scene;
     this.cursors = scene.input.keyboard.createCursorKeys();
+    this.FKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
   }
 
   createPlayer(x, y) {
@@ -23,6 +26,14 @@ export class Player {
     if (bCanJump && this.cursors.up.isDown && this.player.body.touching.down) {
       this.player.setVelocityY(-330);
     }
+  }
+
+  playerDoorPressUpdate(door, nextLevel) {
+    if (!door.checkOverlapPlayer(this.player) || !this.FKey.isDown) {
+      return
+    }
+
+    door.hitDoor(nextLevel);
   }
 
   createPlayerObject(x, y) {

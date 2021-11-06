@@ -1,3 +1,5 @@
+import Phaser from "phaser";
+
 export class Door {
     constructor(scene) {
         this.scene = scene;
@@ -5,7 +7,7 @@ export class Door {
     }
 
     createDoor(x, y) {
-        this.door = this.scene.physics.add.sprite(x, y, "door").setScale(.2); // TODO: Don't use setScale, make the door proper size
+        this.door = this.scene.physics.add.sprite(x-1200, y, "door").setScale(.2); // TODO: Don't use setScale, make the door proper size
         this.door.setCollideWorldBounds(true);
         this.setDoorAnimations();
     }
@@ -23,30 +25,31 @@ export class Door {
         });
     }
 
-    setColliderWithPlayer(player) {
-        this.collider = this.scene.physics.add.collider(player, this.door, this.hitDoor, null, this);
-        this.collider.active = this.bIsOpen;
+    checkOverlapPlayer(player) {
+        var boundThis = this.door.getBounds();
+        var boundPlayer = player.getBounds();
+        return Phaser.Geom.Intersects.RectangleToRectangle(boundThis, boundPlayer);
     }
 
-    hitDoor(player, door) {
-        // stupid but should work :)
+
+    hitDoor(nextLevel) {
         if (!this.isOpen) {
             return // do nothing, door not opened
         }
-
-        this.scene.start("Level2");
+    
+        this.scene.scene.start(nextLevel);
       }
 
     openDoor() {
         this.door.anims.play("open");
         this.bIsOpen = true;
-        this.collider.active = true;
+        // this.collider.active = true;
     }
 
     closeDoor() {
         this.door.anims.play("close");
         this.bIsOpen = false;
-        this.collider.active = false;
+        // this.collider.active = false;
     }
 
     getDoor() {
