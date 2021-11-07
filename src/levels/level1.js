@@ -6,17 +6,30 @@ import { PlatformManager } from '../platform'
 import { Collectible } from "../collectible";
 import { SFX } from '../sfx'
 import { PauseManager } from "../pause";
+import EnemyFactory from '../enemyFactory.js';
+import Wall from '../wall.js';
 
 export class Level1 extends Phaser.Scene {
   constructor() {
     super({ key: "Level1" });
     this.collectibles = [];
     this.collected = 0;
+    this.enemies = [];
+    this.walls = [];
   }
 
   preload() {
     var assets = new Assets(this)
-    assets.loadLevel1()
+    assets.loadLevel1();
+
+    //Enemy
+    this.enemyFactory = new EnemyFactory(this, 'enemy', "../public/images/dude.png", true, {
+      frameWidth: 32,
+      frameHeight: 48,
+    });
+
+    //Walls
+    this.wall = new Wall(this, "wall", "../public/images/wall.png");
   }
 
   create() {
@@ -40,6 +53,14 @@ export class Level1 extends Phaser.Scene {
     // Collectibles
     this.createCollectibles();
 
+    //Enemies
+    this.enemies.push(this.enemyFactory.createEnemy(900, 50, 1));
+
+    //Walls
+    this.walls = this.physics.add.staticGroup();
+    this.wall.createWall(300, 900, this.walls, 1);
+    this.wall.createWall(800, 900, this.walls, 1);
+
     // Add physics
     this.platforms.collideWith(this.player.getPlayer())
     this.platforms.collideWith(this.endDoor.getDoor())
@@ -47,16 +68,25 @@ export class Level1 extends Phaser.Scene {
       this.platforms.collideWith(collectible.getCollectible());
       collectible.addPlayerOverlap(this.player.getPlayer(), this.collect);
     })
+    this.enemies.forEach(enemy => {
+      this.platforms.collideWith(enemy.getEnemy());
+      enemy.setCollidingWith(this.walls);
+      enemy.addPlayerOverlap(this.player.getPlayer(), this.playerLoseLife);
+    })
 
     // pause manager
     this.pauseManager = new PauseManager();
     this.pauseManager.setCurrentScene(this);
     this.pauseManager.setupInputsPause("PauseMenu");
+
   }
 
   update() {
     this.player.playerMovementUpdate(true);
     this.player.playerDoorPressUpdate(this.endDoor, "Level2");
+    for ( var enemy of this.enemies) {
+      enemy.update();
+    }
   }
 
   setSounds() {
